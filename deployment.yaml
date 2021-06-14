@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yelpcamp-frontend
+  # namespace: my-namespace
+  labels:
+    app: yelpcamp-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: yelpcamp-frontend
+  template:
+    metadata:
+      labels:
+        app: yelpcamp-frontend
+    spec:
+      containers:
+        - name: yelpcamp-frontend
+          image: jooankrah/yelpcamp-frontend-image:v2
+          ports:
+            - containerPort: 8080

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: yelpcamp-frontend
+  # namespace: my-namespace
+  labels:
+    app: yelpcamp-frontend
+spec:
+  selector:
+    app: yelpcamp-frontend
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
