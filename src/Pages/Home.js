@@ -10,9 +10,7 @@ export default function Home() {
     async function getAllCampgounds() {
       try {
         dispatch({ type: "FETCHING_CAMPGROUND" });
-        const response = await axiosInstance.get(
-          "http://localhost:3002/campgrounds/"
-        );
+        const response = await axiosInstance.get("/campgrounds/");
         response.status === 200 &&
           dispatch({
             type: "ALL_CAMPGROUND_LOADED",

@@ -32,7 +32,7 @@ export default function Detail() {
       try {
         dispatch({ type: "FETCHING_CAMPGROUND" });
         const response = await axiosInstance.get(
-          "http://localhost:3002/campgrounds/getCampground/",
+          "/campgrounds/getCampground/",
           {
             params: {
               id: params.id,

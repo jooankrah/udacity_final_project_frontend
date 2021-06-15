@@ -1,9 +1,9 @@
 import React from "react";
-import axios from "axios";
 import { Form, Input, Button, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { Link } from "@reach/router";
 import { UserContext } from "../context/userContext";
+import { axiosInstance } from "../utils/axios";
 
 export default function Login() {
   const { dispatch } = React.useContext(UserContext);
@@ -13,10 +13,7 @@ export default function Login() {
   const onFinish = async (values) => {
     console.log("Received values of form: ", values);
     try {
-      const response = await axios.post(
-        "http://localhost:3000/users/login",
-        values
-      );
+      const response = await axiosInstance.post("/users/login", values);
       response.data.status === 201 &&
         dispatch({
           type: "LOGIN",
