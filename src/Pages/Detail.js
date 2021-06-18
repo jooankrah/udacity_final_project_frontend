@@ -17,6 +17,7 @@ import { CampgroundContext } from "../context/campgroundContext";
 import { navigate, useParams } from "@reach/router";
 import { CampCard } from "../components/CampCard";
 import { axiosInstance } from "../utils/axios";
+import { UserContext } from "../context/userContext";
 
 const { Meta } = Card;
 
@@ -25,6 +26,7 @@ const { confirm } = Modal;
 
 export default function Detail() {
   const { state, dispatch } = React.useContext(CampgroundContext);
+  const User = React.useContext(UserContext);
   const params = useParams();
 
   React.useEffect(() => {
@@ -56,8 +58,6 @@ export default function Detail() {
     // };
   }, [dispatch, params.id]);
 
-  const [user, setuser] = useState(true);
-
   const [visible, setvisible] = useState(false);
   const [loading, setloading] = useState(true);
 
@@ -65,14 +65,11 @@ export default function Detail() {
     try {
       setloading(true);
 
-      const response = await axiosInstance.delete(
-        "http://localhost:3002/campgrounds/delete",
-        {
-          params: {
-            id: params.id,
-          },
-        }
-      );
+      const response = await axiosInstance.delete("/campgrounds/delete", {
+        params: {
+          id: params.id,
+        },
+      });
       response.data.status === 200 &&
         dispatch({ type: "CAMPGROUND_DELETED", payload: params.id });
       setloading(false);
@@ -133,7 +130,7 @@ export default function Detail() {
                       <h2>Rating</h2>
                       <Rate disabled defaultValue={4} />
                       <br />
-                      {user ? (
+                      {User.state.user._id === state.campground.author.id ? (
                         <>
                           <Button
                             onClick={() => setvisible(true)}

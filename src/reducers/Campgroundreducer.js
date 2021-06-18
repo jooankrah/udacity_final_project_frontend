@@ -19,7 +19,7 @@ export const campgroundreducer = (state, action) => {
     case "CAMPGROUND_FETCHED":
       return {
         ...state,
-        loding: false,
+        loading: false,
         campground: action.payload,
       };
     case "CAMPGROUND_DELETED":

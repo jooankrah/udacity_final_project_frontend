@@ -1,23 +1,72 @@
 import React from "react";
-import { Drawer, Form, Button, Col, Row, Input, message, Upload } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import { Drawer, message } from "antd";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import { v4 as uuidv4 } from "uuid";
+
+import "bootstrap/dist/css/bootstrap.min.css";
+
 import { axiosInstance } from "../utils/axios";
 import { CampgroundContext } from "../context/campgroundContext";
 
 export default function LeftDrawer(props) {
+  //get random id
+  const fileId = uuidv4();
+
+  //get put signed url
+  React.useEffect(() => {
+    async function getsignedUrl() {
+      try {
+        const response = axiosInstance.get("/campgrounds/signed-url", {
+          params: {
+            fileId,
+          },
+        });
+        console.log(response.data);
+      } catch (error) {
+        return error;
+      }
+    }
+  });
+
+  //use campground context
   const { state, dispatch } = React.useContext(CampgroundContext);
 
-  const onFinish = async (values) => {
+  //set campground object state
+  const [campground, setcampground] = React.useState({
+    name: "",
+    price: "",
+    description: "",
+    image: null,
+  });
+
+  //handle text filed change
+  const handlechange = (e) => {
+    const { name, value } = e.target;
+    setcampground((prevstate) => ({ ...prevstate, [name]: value }));
+  };
+
+  //handle image file field change
+  const handleImageChange = async (e) => {
+    setcampground((prevstate) => ({ ...prevstate, image: e.target.files[0] }));
+    const response = await axiosInstance.get("/campgrounds/signed-url", {
+      params: {
+        fileId,
+      },
+    });
+    console.log(fileId);
+    console.log(response.data);
+  };
+
+  // handle  form submission
+  const onFinish = async () => {
     try {
-      console.log(values);
-      const response = await axiosInstance.post(
-        "http://localhost:3002/campgrounds/new",
-        {
-          campground: {
-            ...values,
-          },
-        }
-      );
+      console.log(campground);
+      const response = await axiosInstance.post("/campgrounds/new", {
+        Campground: {
+          ...campground,
+        },
+      });
       response.status === 201 &&
         dispatch({ type: "", payload: response.data.campground });
       message.success(response.data.message);
@@ -50,77 +99,54 @@ export default function LeftDrawer(props) {
         //   </div>
         // }
       >
-        <Form layout="vertical" onFinish={onFinish}>
-          <Row gutter={16}>
-            <Col span={24}>
-              <Form.Item
-                name="name"
-                label="Title"
-                rules={[{ required: true, message: "Please enter a name" }]}
-              >
-                <Input placeholder="Please enter a name" />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Row gutter={16}>
-            <Col span={24}>
-              <Form.Item
-                name="price"
-                label="Price"
-                rules={[{ required: true, message: "Please enter a price" }]}
-              >
-                <Input addonBefore="GH¢ " placeholder="Please enter a price" />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={24}>
-              <Form.Item name="description" label="Description">
-                <Input.TextArea
-                  rows={4}
-                  placeholder="please enter a description"
-                />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={24}>
-              <Form.Item
-                name="phone"
-                label="Phone Number"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your phone number!",
-                  },
-                ]}
-              >
-                <Input addonBefore="00233" style={{ width: "100%" }} />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={24}>
-              <Form.Item name="image" label="Image">
-                <Upload>
-                  <Button icon={<UploadOutlined />}>Select File</Button>
-                </Upload>
-              </Form.Item>
-            </Col>
-          </Row>
-          <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              className="login-form-button"
-              style={{ width: "50%", height: "40px" }}
-              // loading={loading}
-            >
-              submit
-            </Button>
-          </Form.Item>
+        <Form encType="multipart/form-data">
+          <Form.Group controlId="exampleForm.ControlInput1">
+            <Form.Label>Name</Form.Label>
+            <Form.Control
+              type="text"
+              name="name"
+              value={campground.name}
+              onChange={handlechange}
+              placeholder="Enter name of camp here"
+            />
+          </Form.Group>
+          <Form.Group controlId="exampleForm.ControlInput1">
+            <Form.Label>Price</Form.Label>
+            <Form.Control
+              type="text"
+              name="price"
+              value={campground.price}
+              onChange={handlechange}
+              placeholder="Enter price of camp here without currency"
+            />
+          </Form.Group>
+          <Form.Group controlId="exampleForm.ControlTextarea1">
+            <Form.Label>Description</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
+              name="description"
+              value={campground.description}
+              onChange={handlechange}
+            />
+          </Form.Group>
+          <Form.Group>
+            <Form.File
+              id="image"
+              name="image"
+              onChange={handleImageChange}
+              label="Camp Photo"
+            />
+          </Form.Group>
         </Form>
+        <Button
+          variant="secondary"
+          style={{ width: "30%" }}
+          onClick={onFinish}
+          type="submit"
+        >
+          Submit
+        </Button>
       </Drawer>
     </>
   );

@@ -1,7 +1,8 @@
-const axios = require("axios");
+import axios from "axios";
+import { SERVER_URL } from "../config";
 
 export const axiosInstance = axios.create({
-  baseURL: "http://localhost:8080/",
+  baseURL: SERVER_URL,
   timeout: 100000,
 });
 

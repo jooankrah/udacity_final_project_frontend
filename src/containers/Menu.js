@@ -59,20 +59,26 @@ export default function AppMenu() {
           defaultSelectedKeys={[selectedMenu]}
           onClick={(e) => setselectedMenu(e.key)}
         >
+          <Menu.Item key="0">
+            <Link to="/">Home</Link>
+          </Menu.Item>
           <Menu.Item key="1">
-            <Link to="/">All campgrounds</Link>
+            <Link to="/allcampgrounds">All campgrounds</Link>
           </Menu.Item>
           <Menu.Item key="2">
-            <Link to="campground/detail">My campgrounds</Link>
+            <Link to="/mycampground">My campgrounds</Link>
           </Menu.Item>
           <Menu.Item key="3">
-            <Link to="about">About</Link>
+            <Link to="/addnew">Add New Campground</Link>
           </Menu.Item>
           <Menu.Item key="4">
+            <Link to="about">About</Link>
+          </Menu.Item>
+          <Menu.Item key="5">
             <Link to="contact-us">Contact Us</Link>
           </Menu.Item>
           <SubMenu
-            style={{ left: "30%" }}
+            style={{ left: "20%" }}
             key="user"
             title={`Welcome, ${state.user.username}`}
           >
