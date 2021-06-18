@@ -17,6 +17,6 @@ spec:
     spec:
       containers:
         - name: yelpcamp-frontend
-          image: jooankrah/yelpcamp-frontend-image
+          image: jooankrah/yelpcamp-frontend-image:latest
           ports:
             - containerPort: 80
