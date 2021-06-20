@@ -40,7 +40,7 @@ export default function AppMenu() {
             <Link to="/">Home</Link>
           </Menu.Item>
           <Menu.Item key="2">
-            <Link to="/">All campgrounds</Link>
+            <Link to="allcampgrounds">All campgrounds</Link>
           </Menu.Item>
           <Menu.Item key="3">
             <Link to="about">About</Link>
@@ -48,10 +48,10 @@ export default function AppMenu() {
           <Menu.Item key="4">
             <Link to="contact-us">Contact Us</Link>
           </Menu.Item>
-          <Menu.Item style={{ left: "50%" }} key="login">
+          <Menu.Item style={{ left: "30%" }} key="login">
             <Link to="login">Login</Link>
           </Menu.Item>
-          <Menu.Item style={{ left: "50%" }} key="signup">
+          <Menu.Item style={{ left: "30%" }} key="signup">
             <Link to="signup">Sign Up</Link>
           </Menu.Item>
         </Menu>
