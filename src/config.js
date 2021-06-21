@@ -1,2 +1,2 @@
 export const SERVER_URL =
-  "http://af8f68e0b84e345249d8592dddcbe0ff-882614750.us-east-2.elb.amazonaws.com";
+  "http://afae3ad994b1746648e1f7f9396d2491-404241972.us-east-2.elb.amazonaws.com";
